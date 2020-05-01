@@ -1,9 +1,9 @@
 # Shop app
 
-in Flutter
+App progammed in Flutter
 
 ## Used
 
 I used:
-- providers
-- 
+- Custom themes, fonts
+- Providers, listeners
