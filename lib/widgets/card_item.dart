@@ -3,14 +3,14 @@ import 'package:provider/provider.dart';
 
 import '../providers/cart.dart';
 
-class CardItem extends StatelessWidget {
+class CartItem extends StatelessWidget {
   final String id;
-  final productId;
+  final String productId;
   final double price;
   final int quantity;
   final String title;
 
-  CardItem(
+  CartItem(
     this.id,
     this.productId,
     this.price,
@@ -27,47 +27,45 @@ class CardItem extends StatelessWidget {
         child: Icon(
           Icons.delete,
           color: Colors.white,
-          size: 20,
+          size: 40,
         ),
         alignment: Alignment.centerRight,
-        padding: EdgeInsets.only(
-          right: 20,
-        ),
+        padding: EdgeInsets.only(right: 20),
         margin: EdgeInsets.symmetric(
           horizontal: 15,
           vertical: 4,
         ),
       ),
+      direction: DismissDirection.endToStart,
       confirmDismiss: (direction) {
         return showDialog(
           context: context,
           builder: (ctx) => AlertDialog(
-            title: Text('Are you sure?'),
-            content: Text(
-              'Do you want to remove the item from the cart?',
-            ),
-            actions: <Widget>[
-              FlatButton(
-                onPressed: () {
-                  Navigator.of(ctx).pop(false);
-                },
-                child: Text('No'),
+                title: Text('Are you sure?'),
+                content: Text(
+                  'Do you want to remove the item from the cart?',
+                ),
+                actions: <Widget>[
+                  FlatButton(
+                    child: Text('No'),
+                    onPressed: () {
+                      Navigator.of(ctx).pop(false);
+                    },
+                  ),
+                  FlatButton(
+                    child: Text('Yes'),
+                    onPressed: () {
+                      Navigator.of(ctx).pop(true);
+                    },
+                  ),
+                ],
               ),
-              FlatButton(
-                onPressed: () {
-                  Navigator.of(ctx).pop(true);
-                },
-                child: Text('Yes'),
-              )
-            ],
-          ),
         );
       },
       onDismissed: (direction) {
         Provider.of<Cart>(context, listen: false).removeItem(productId);
       },
       child: Card(
-        elevation: 3,
         margin: EdgeInsets.symmetric(
           horizontal: 15,
           vertical: 4,
@@ -84,9 +82,8 @@ class CardItem extends StatelessWidget {
               ),
             ),
             title: Text(title),
-            subtitle: Text(
-                'Total: \$${double.parse(((price * quantity)).toStringAsFixed(2))}'),
-            trailing: Text('$quantity x '),
+            subtitle: Text('Total: \$${(price * quantity)}'),
+            trailing: Text('$quantity x'),
           ),
         ),
       ),

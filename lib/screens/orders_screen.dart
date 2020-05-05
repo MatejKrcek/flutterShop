@@ -6,7 +6,7 @@ import '../widgets/order_item.dart';
 import '../widgets/app_drawer.dart';
 
 class OrdersScreen extends StatelessWidget {
-  static const routeName = './orders';
+  static const routeName = '/orders';
 
   @override
   Widget build(BuildContext context) {
@@ -17,8 +17,8 @@ class OrdersScreen extends StatelessWidget {
       ),
       drawer: AppDrawer(),
       body: ListView.builder(
-        itemBuilder: (ctx, i) => OrderItem(orderData.orders[i]),
         itemCount: orderData.orders.length,
+        itemBuilder: (ctx, i) => OrderItem(orderData.orders[i]),
       ),
     );
   }
