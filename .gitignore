@@ -29,6 +29,7 @@
 .pub-cache/
 .pub/
 /build/
+/models/firebase.dart
 
 # Web related
 lib/generated_plugin_registrant.dart
