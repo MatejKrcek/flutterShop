@@ -24,7 +24,7 @@ class AuthScreen extends StatelessWidget {
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  Color.fromRGBO(0, 255, 140, 1).withOpacity(0.6),
+                  Color.fromRGBO(215, 117, 255, 1).withOpacity(0.5),
                   Color.fromRGBO(255, 188, 117, 1).withOpacity(0.9),
                 ],
                 begin: Alignment.topLeft,
@@ -46,7 +46,7 @@ class AuthScreen extends StatelessWidget {
                       margin: EdgeInsets.only(bottom: 20.0),
                       padding:
                           EdgeInsets.symmetric(vertical: 8.0, horizontal: 94.0),
-                      transform: Matrix4.rotationZ(-5 * pi / 180)
+                      transform: Matrix4.rotationZ(-8 * pi / 180)
                         ..translate(-10.0),
                       // ..translate(-10.0),
                       decoration: BoxDecoration(
@@ -65,7 +65,7 @@ class AuthScreen extends StatelessWidget {
                         style: TextStyle(
                           color: Theme.of(context).accentTextTheme.title.color,
                           fontSize: 50,
-                          fontFamily: 'Poppins',
+                          fontFamily: 'Anton',
                           fontWeight: FontWeight.normal,
                         ),
                       ),
@@ -108,16 +108,17 @@ class _AuthCardState extends State<AuthCard> {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: Text('An Error Occured'),
-        content: Text(message),
-        actions: <Widget>[
-          FlatButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('OK'))
-        ],
-      ),
+            title: Text('An Error Occurred!'),
+            content: Text(message),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('Okay'),
+                onPressed: () {
+                  Navigator.of(ctx).pop();
+                },
+              )
+            ],
+          ),
     );
   }
 
@@ -132,35 +133,38 @@ class _AuthCardState extends State<AuthCard> {
     });
     try {
       if (_authMode == AuthMode.Login) {
+        // Log user in
         await Provider.of<Auth>(context, listen: false).login(
           _authData['email'],
           _authData['password'],
         );
       } else {
+        // Sign user up
         await Provider.of<Auth>(context, listen: false).signup(
           _authData['email'],
           _authData['password'],
         );
       }
     } on HttpException catch (error) {
-      var errorMessage = 'Authentificate failed.';
-
-      if (error.toString().contains('EMAIL_EXIST')) {
-        errorMessage = 'This email already exist.';
+      var errorMessage = 'Authentication failed';
+      if (error.toString().contains('EMAIL_EXISTS')) {
+        errorMessage = 'This email address is already in use.';
       } else if (error.toString().contains('INVALID_EMAIL')) {
-        errorMessage = 'This is not a valid email address.';
+        errorMessage = 'This is not a valid email address';
       } else if (error.toString().contains('WEAK_PASSWORD')) {
         errorMessage = 'This password is too weak.';
       } else if (error.toString().contains('EMAIL_NOT_FOUND')) {
-        errorMessage = 'Could not found a user with that email.';
+        errorMessage = 'Could not find a user with that email.';
       } else if (error.toString().contains('INVALID_PASSWORD')) {
         errorMessage = 'Invalid password.';
       }
       _showErrorDialog(errorMessage);
     } catch (error) {
-      var errorMessage = 'Could not authentificate. Please try again later';
+      const errorMessage =
+          'Could not authenticate you. Please try again later.';
       _showErrorDialog(errorMessage);
     }
+
     setState(() {
       _isLoading = false;
     });
